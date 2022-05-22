@@ -3,16 +3,17 @@
 from flask import Blueprint, jsonify
 from flask_restful import Api
 from marshmallow import ValidationError
-from stock_service.api.resources import StockResource
+
+from .resources import StockResource
 
 
-blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
-api = Api(blueprint)
+api_v1_0_bp = Blueprint("api", __name__, url_prefix="/api/v1")
+api = Api(api_v1_0_bp)
 
 
 api.add_resource(StockResource, "/stock", endpoint="stock")
 
 
-@blueprint.errorhandler(ValidationError)
+@api_v1_0_bp.errorhandler(ValidationError)
 def handle_marshmallow_error(e):
     return jsonify(e.messages), 400

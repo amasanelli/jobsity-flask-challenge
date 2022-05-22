@@ -1,5 +1,5 @@
 from flask import Flask
-from stock_service import api
+from stock_service.api import blueprint
 
 
 def create_app(testing=False):
@@ -15,7 +15,7 @@ def create_app(testing=False):
 
 
 def register_blueprints(app):
-    app.register_blueprint(api.views.blueprint)
+    app.register_blueprint(blueprint)
 
 
 if __name__ == '__main__':

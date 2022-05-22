@@ -1,3 +1,1 @@
-from stock_service.api import views
-
-__all__ = ["views"]
+from .v_1_0 import api_v1_0_bp as blueprint

@@ -77,7 +77,7 @@ The following features are optional to implement, but if you do, you'll be ranke
 ## How to run the project
 * Create a virtualenv: `python -m venv virtualenv` and activate it `. virtualenv/bin/activate`.
 * Install dependencies: `pip install -r requirements.txt`
-* Start the api service: `cd api_service ; flask db migrate; flask db upgrade ; flask run`
+* Start the api service: `cd api_service ; flask db init ; flask db migrate; flask db upgrade ; flask run`
 * Start the stock service: `cd stock_service ; flask run`
 
 __Important:__ If your implementation requires different steps to start the services

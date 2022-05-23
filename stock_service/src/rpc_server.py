@@ -1,21 +1,19 @@
 import json
+import sys
 from  threading import Thread
 import pika
 from .api.v_1_0.schemas import StockSchema
 from .services import Stooq
 
-
 class RPCService(Thread):
 
-    def __init__(self):
+    def __init__(self, connection):
         Thread.__init__(self, target=self.init_rpc_server)
+        self.connection = connection
 
     def init_rpc_server(self):
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='rabbitmq-server')
-        )
 
-        channel = connection.channel()
+        channel = self.connection.channel()
         channel.queue_declare(queue='rpc_queue')
 
         channel.basic_qos(prefetch_count=1)
@@ -48,8 +46,16 @@ class RPCService(Thread):
 
 
 def main():
-    th = RPCService()
+
+    try:
+        connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host='rabbitmq-server')
+        )
+    except:
+        sys.exit('Connection error')
+
+    th = RPCService(connection)
     th.setDaemon(True)
     th.start()
 
-#main()
+main()

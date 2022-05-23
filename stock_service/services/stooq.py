@@ -9,14 +9,14 @@ class Stooq():
     @classmethod
     def get_data(cls, stock_code: str):
         print(stock_code)
-        r = requests.get(cls.url.format(stock_code))
+        res = requests.get(cls.url.format(stock_code))
 
-        decoded = r.content.decode('utf-8')
+        decoded = res.content.decode('utf-8')
 
         lst = list(csv.reader(decoded.splitlines(), delimiter=','))
 
         if 'N/D' in lst[1]:
-            return None
+            raise Exception('No data')
 
         return cls._format_data(lst)
 

@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_restful import Resource
-from flask_jwt_extended import create_access_token
+from api_service.auth import create_access_token
 from api_service.api.v_1_0.schemas import UserSchema
 from api_service.extensions import db, bcrypt
 from api_service.models import User
@@ -30,6 +30,6 @@ class Login(Resource):
 
         schema = UserSchema()
         token_data = schema.dump(user)
-        access_token = create_access_token(identity=token_data)
+        access_token = create_access_token(token_data)
 
         return jsonify({'token': access_token})

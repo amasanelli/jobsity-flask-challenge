@@ -16,3 +16,4 @@ pytest-factoryboy
 
 requests
 flask_bcrypt
+PyJWT

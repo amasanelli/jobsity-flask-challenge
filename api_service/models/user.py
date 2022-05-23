@@ -5,7 +5,9 @@ from api_service.extensions import db, bcrypt
 
 
 class User(db.Model):
-    """Basic user model"""
+    """
+    User model
+    """
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)

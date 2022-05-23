@@ -23,10 +23,10 @@ class StockResource(Resource):
         if stock_code is None or stock_code == '':
             return "Missing stock code", 400
 
-        stock_data_obj = Stooq.get_data(stock_code)
-
-        if stock_data_obj is None:
-            return "No data", 400
+        try:
+            stock_data_obj = Stooq.get_data(stock_code)
+        except Exception as e:
+            return e.args[0], 400
 
         schema = StockSchema()
         return schema.dump(stock_data_obj)

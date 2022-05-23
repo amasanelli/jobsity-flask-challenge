@@ -3,7 +3,7 @@
 import pytest
 from dotenv import load_dotenv
 
-from api_service.models import User
+from api_service.models import UserModel
 from api_service.app import create_app
 from api_service.extensions import db as _db
 from pytest_factoryboy import register
@@ -35,7 +35,7 @@ def db(app):
 
 @pytest.fixture
 def admin_user(db):
-    user = User(
+    user = UserModel(
         username='admin',
         email='admin@admin.com',
         password='admin',

@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 import factory
-from api_service.models import User
+from api_service.models import UserModel
 
 
 class UserFactory(factory.Factory):
@@ -11,4 +11,4 @@ class UserFactory(factory.Factory):
     password = "mypwd"
 
     class Meta:
-        model = User
+        model = UserModel

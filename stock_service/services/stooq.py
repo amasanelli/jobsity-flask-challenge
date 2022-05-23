@@ -8,7 +8,6 @@ class Stooq():
 
     @classmethod
     def get_data(cls, stock_code: str):
-        print(stock_code)
         res = requests.get(cls.url.format(stock_code))
 
         decoded = res.content.decode('utf-8')

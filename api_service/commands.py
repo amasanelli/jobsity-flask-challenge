@@ -16,13 +16,13 @@ def cli():
 def init():
     """Create test users"""
     from api_service.extensions import db
-    from api_service.models import User
+    from api_service.models import UserModel
 
     click.echo("create admin user")
-    user = User(username="admin", email="admin@mail.com", password="admin", active=True, role='ADMIN')
+    user = UserModel(username="admin", email="admin@mail.com", password="admin", active=True, role='ADMIN')
     db.session.add(user)
     click.echo("create regular user")
-    user = User(username="johndoe", email="johndoe@mail.com", password="john", active=True, role='USER')
+    user = UserModel(username="johndoe", email="johndoe@mail.com", password="john", active=True, role='USER')
     db.session.commit()
     click.echo("users created")
 

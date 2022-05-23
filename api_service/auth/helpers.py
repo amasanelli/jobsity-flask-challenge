@@ -22,12 +22,12 @@ def admin_required(function):
 
     def wrapper(*args, **kwargs):
         try:
-            payload = get_payload()
+            identity = get_identity()
         except Exception as e:
             return e.args[0], 400
 
-        if payload['identity']['role'] == 'ADMIN':
-            setattr(request, 'user', payload['identity'])
+        if identity.get('role') == 'ADMIN':
+            setattr(request, 'user', identity)
             return function(*args, **kwargs)
 
         return 'Unauthorized user', 400
@@ -42,16 +42,16 @@ def login_required(function):
 
     def wrapper(*args, **kwargs):
         try:
-            payload = get_payload()
+            identity = get_identity()
         except Exception as e:
             return e.args[0], 400
         
-        setattr(request, 'user', payload['identity'])
+        setattr(request, 'user', identity)
         return function(*args, **kwargs)
 
     return wrapper
 
-def get_payload():
+def get_identity():
     token = request.headers.get('Authorization').replace('Bearer ', '')
 
     if token is None:
@@ -62,4 +62,9 @@ def get_payload():
     except:
         raise Exception('Invalid token')
 
-    return payload
+    identity = payload.get('identity')
+
+    if identity is None:
+        raise Exception('Invalid token')
+
+    return identity

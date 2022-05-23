@@ -4,10 +4,12 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from api_service.extensions import db, bcrypt
 
 
-class User(db.Model):
+class UserModel(db.Model):
     """
     User model
     """
+
+    __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)

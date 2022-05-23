@@ -3,7 +3,7 @@ from flask_restful import Resource
 from api_service.auth import create_access_token
 from api_service.api.v_1_0.schemas import UserSchema
 from api_service.extensions import db, bcrypt
-from api_service.models import User
+from api_service.models import UserModel
 
 
 class Login(Resource):
@@ -20,7 +20,7 @@ class Login(Resource):
         if username is None or password is None:
             return "Missing login credentials", 400
 
-        user: User = User.query.filter_by(username=username).first()
+        user: UserModel = UserModel.query.filter_by(username=username).first()
         if user is None:
             return "User not found", 400
 

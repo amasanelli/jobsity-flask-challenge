@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 from sqlalchemy.ext.hybrid import hybrid_property
-from api_service.extensions import db, pwd_context
+from api_service.extensions import db, bcrypt
 
 
 class User(db.Model):
@@ -20,7 +20,7 @@ class User(db.Model):
 
     @password.setter
     def password(self, value):
-        self._password = pwd_context.hash(value)
+        self._password = bcrypt.generate_password_hash(value).decode('utf8')
 
     def __repr__(self):
         return "<User %s>" % self.username

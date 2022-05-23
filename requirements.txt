@@ -13,4 +13,6 @@ pytest
 pytest-flask
 pytest-runner
 pytest-factoryboy
+
 requests
+flask_bcrypt

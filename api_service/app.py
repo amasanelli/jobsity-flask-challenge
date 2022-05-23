@@ -1,9 +1,8 @@
 # encoding: utf-8
 
 from flask import Flask
-from api_service.api import blueprint
-from api_service.extensions import db
-from api_service.extensions import migrate
+from .api import blueprint
+from .extensions import db, migrate, jwt, bcrypt, ma
 
 
 def create_app(testing=False):
@@ -21,6 +20,9 @@ def create_app(testing=False):
 
 def configure_extensions(app):
     db.init_app(app)
+    jwt.init_app(app)
+    bcrypt.init_app(app)
+    ma.init_app(app)
     migrate.init_app(app, db)
 
 

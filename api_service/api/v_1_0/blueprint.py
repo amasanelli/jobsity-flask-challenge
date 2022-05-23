@@ -3,7 +3,7 @@
 from flask import Blueprint, current_app, jsonify
 from flask_restful import Api
 from marshmallow import ValidationError
-from .resourses import StockQuery, History, Stats
+from .resourses import StockQuery, History, Stats, Login
 
 
 api_v1_0_bp = Blueprint("api", __name__, url_prefix="/api/v1")
@@ -13,6 +13,7 @@ api = Api(api_v1_0_bp)
 api.add_resource(StockQuery, "/stock", endpoint="stock")
 api.add_resource(History, "/users/history", endpoint="users-history")
 api.add_resource(Stats, "/stats", endpoint="stats")
+api.add_resource(Login, "/login", endpoint="login")
 
 
 @api_v1_0_bp.errorhandler(ValidationError)

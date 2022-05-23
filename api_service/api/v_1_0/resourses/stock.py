@@ -5,7 +5,7 @@ from api_service.api.v_1_0.schemas import StockInfoSchema
 from api_service.auth import login_required
 from api_service.extensions import db
 from api_service.models import StockQueryModel
-from api_service.services import StockService
+from api_service.services import StockRPCService
 
 
 class StockQuery(Resource):
@@ -22,7 +22,7 @@ class StockQuery(Resource):
             return 'Missing stock code', 400
 
         try:
-            stock_data = StockService.get_data(stock_code)
+            stock_data = StockRPCService().get_data(stock_code)
         except Exception as e:
             return e.args[0], 400
 

@@ -1,5 +1,6 @@
 from flask import Flask
-from stock_service.api import blueprint
+from .api import blueprint
+from stock_service import rpc_server
 from .extensions import ma
 
 def create_app(testing=False):
@@ -19,8 +20,3 @@ def configure_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(blueprint)
-
-
-if __name__ == '__main__':
-    app = create_app(False)
-    app.run(host='0.0.0.0', port=5001)

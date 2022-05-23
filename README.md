@@ -82,3 +82,6 @@ The following features are optional to implement, but if you do, you'll be ranke
 
 __Important:__ If your implementation requires different steps to start the services
 (like starting a rabbitMQ consumer), document them here!
+
+
+docker run --rm -it -p 15672:15672 -p 5672:5672 rabbitmq:management-alpine

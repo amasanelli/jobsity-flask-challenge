@@ -4,7 +4,7 @@ from flask import request
 from flask_restful import Resource
 
 from stock_service.api.v_1_0.schemas.stock import StockSchema
-from stock_service.services.stooq import Stooq
+from stock_service.services import Stooq
 
 
 class StockResource(Resource):
@@ -15,9 +15,6 @@ class StockResource(Resource):
     """
 
     def get(self):
-        # TODO: Implement the call to the stooq service here. The stock code to query the API
-        # should come in a query parameter.
-
         stock_code = request.args.get('stockCode')
 
         if stock_code is None or stock_code == '':

@@ -1,0 +1,1 @@
+from .stooq_service import Stooq

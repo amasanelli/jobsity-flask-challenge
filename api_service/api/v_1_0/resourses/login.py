@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_restful import Resource
 from api_service.auth import create_access_token
 from api_service.api.v_1_0.schemas import UserSchema
-from api_service.extensions import db, bcrypt
+from api_service.extensions import bcrypt
 from api_service.models import UserModel
 
 

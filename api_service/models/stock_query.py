@@ -19,7 +19,7 @@ class StockQueryModel(db.Model):
     low = db.Column(db.Float, nullable=False)
     close = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, ForeignKey("user.id"))
-    query_date = db.Column(db.DateTime, default=datetime.now())
+    query_date = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return "<Stock %s>" % self.symbol

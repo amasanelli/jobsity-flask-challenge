@@ -35,7 +35,8 @@ class StockQuery(Resource):
             high=stock_data.get('high'),
             low=stock_data.get('low'),
             close=stock_data.get('close'),
-            user_id=request.user.get('id')
+            user_id=request.user.get('id'),
+            query_date=datetime.now()
         )
         db.session.add(stock_query)
         db.session.commit()

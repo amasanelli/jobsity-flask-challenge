@@ -3,9 +3,9 @@
 import pytest
 from dotenv import load_dotenv
 
-from api_service.models import UserModel
-from api_service.app import create_app
-from api_service.extensions import db as _db
+from src.models import UserModel
+from src.app import create_app
+from src.extensions import db as _db
 from pytest_factoryboy import register
 from .factories import UserFactory
 

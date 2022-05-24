@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 import factory
-from api_service.models import UserModel
+from src.models import UserModel
 
 
 class UserFactory(factory.Factory):

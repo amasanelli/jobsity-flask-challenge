@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from flask import jsonify, request
 from flask_restful import Resource
 from src.auth import create_access_token
@@ -8,10 +10,14 @@ from src.models import UserModel
 
 class Login(Resource):
     """
-    User login
+    Endpoint for user login
     """
 
     def post(self):
+        """
+        Uses the username and password from the JSON body to generate and return a JWT token
+        """
+
         req_data = request.get_json()
 
         username = req_data.get('username')
@@ -26,7 +32,6 @@ class Login(Resource):
 
         if not bcrypt.check_password_hash(user.password, password):
             return "Unauthorized user", 400
-
 
         schema = UserSchema()
         token_data = schema.dump(user)

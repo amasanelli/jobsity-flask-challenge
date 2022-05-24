@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from datetime import datetime
 import os
 from flask import request
@@ -11,11 +13,14 @@ from src.services import StockRPCService, StockHTTPService
 
 class StockQuery(Resource):
     """
-    Endpoint to allow users to query stocks
+    Endpoint to query stocks
     """
 
     @login_required
     def get(self):
+        """
+        Returns stock data from stock service
+        """
 
         stock_code = request.args.get('q')
 
@@ -30,10 +35,11 @@ class StockQuery(Resource):
         except Exception as e:
             return e.args[0], 400
 
+        # save the stock data in db
         stock_query = StockQueryModel(
             symbol=stock_data.get('symbol'),
             name=stock_data.get('name'),
-            date=datetime.strptime(stock_data.get('date'), '%Y-%m-%d') ,
+            date=datetime.strptime(stock_data.get('date'), '%Y-%m-%d'),
             time=datetime.strptime(stock_data.get('time'), '%H:%M:%S').time(),
             open=stock_data.get('open'),
             high=stock_data.get('high'),
@@ -45,6 +51,7 @@ class StockQuery(Resource):
         db.session.add(stock_query)
         db.session.commit()
 
+        # return a simplified version of data
         schema = StockInfoSchema()
         return schema.dump({
             'symbol': stock_data.get('symbol'),

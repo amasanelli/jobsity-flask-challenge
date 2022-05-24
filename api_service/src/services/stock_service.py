@@ -7,6 +7,9 @@ import requests
 
 
 class StockRPCService(object):
+    """
+    Service to query the stock service using rabbitmq for RPC
+    """
 
     def __init__(self):
         self.connection = pika.BlockingConnection(
@@ -52,6 +55,10 @@ class StockRPCService(object):
 
 
 class StockHTTPService(object):
+    """
+    Service to query the stock service using http requests
+    It only works using docker-compose
+    """
 
     url = 'http://stock-service:5000/api/v1/stock?stockCode={}'
 

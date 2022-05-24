@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from flask import request
 from flask_restful import Resource
 from sqlalchemy import func
@@ -9,11 +11,16 @@ from src.models import StockQueryModel
 
 class Stats(Resource):
     """
-    Allows admin users to see which are the most queried stocks.
+    Endpoint to see query stats
+    Only ADMIN users allowed
     """
 
     @admin_required
     def get(self):
+        """
+        Returns the top 5 symbol 
+        """
+
         stock_stats = db.session.query(
             StockQueryModel.symbol,
             func.count(StockQueryModel.id)

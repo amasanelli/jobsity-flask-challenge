@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from sqlalchemy import ForeignKey
 from src.extensions import db
 

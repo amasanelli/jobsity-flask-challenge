@@ -18,5 +18,5 @@ COPY uwsgi.ini .
 COPY rpc_server.py .
 COPY src src/
 
-CMD [ "python", "rpc_server.py" ]
-#CMD [ "uwsgi", "uwsgi.ini" ]
+# use rpc by default
+CMD [ "python", "rpc_server.py" ] 

@@ -20,10 +20,12 @@ def init():
 
     click.echo("create admin user")
     user = UserModel(username="admin", email="admin@mail.com", password="admin", active=True, role='ADMIN')
+
     db.session.add(user)
     click.echo("create regular user")
     user = UserModel(username="johndoe", email="johndoe@mail.com", password="john", active=True, role='USER')
     db.session.commit()
+    
     click.echo("users created")
 
 

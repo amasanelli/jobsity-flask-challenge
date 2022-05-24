@@ -1,4 +1,7 @@
-"""Default configuration
+# encoding: utf-8
+
+"""
+Default configuration
 
 Use env var to override
 """

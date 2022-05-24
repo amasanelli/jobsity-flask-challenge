@@ -1,9 +1,15 @@
+# encoding: utf-8
+
 import requests
 import csv
 from datetime import datetime
 
 
 class Stooq():
+    """
+    Service to get stock data from stooq.com
+    """
+    
     url = 'https://stooq.com/q/l/?s={}&f=sd2t2ohlcvn&h&e=csv'
 
     @classmethod

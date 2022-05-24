@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from flask import Flask
 from .api import blueprint
 from .extensions import ma

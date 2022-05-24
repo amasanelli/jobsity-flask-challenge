@@ -1,4 +1,4 @@
-# docker-compose.yml
+# docker-compose to run services allowing them to communicate using rabbitmq
 
 version: "3.2"
 services:

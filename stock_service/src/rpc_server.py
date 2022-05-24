@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import json
 import pika
 from .api.v_1_0.schemas import StockSchema
@@ -15,7 +17,9 @@ class RPCService():
         channel.queue_declare(queue='rpc_queue')
 
         channel.basic_qos(prefetch_count=1)
-        channel.basic_consume(queue='rpc_queue', on_message_callback=self.on_request)
+        channel.basic_consume(
+            queue='rpc_queue', on_message_callback=self.on_request
+        )
 
         print("RPC server listening")
 

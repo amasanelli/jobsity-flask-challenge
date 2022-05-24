@@ -10,7 +10,6 @@ from .resources import StockResource
 api_v1_0_bp = Blueprint("api", __name__, url_prefix="/api/v1")
 api = Api(api_v1_0_bp)
 
-
 api.add_resource(StockResource, "/stock", endpoint="stock")
 
 

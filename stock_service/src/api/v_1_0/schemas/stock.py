@@ -4,6 +4,9 @@ from src.extensions import ma
 
 
 class StockSchema(ma.Schema):
+    """
+    Stock schema
+    """
 
     symbol = ma.String(dump_only=True)
     name = ma.String(dump_only=True)

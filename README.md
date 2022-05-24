@@ -98,3 +98,102 @@ docker-compose build
 docker-compose up
 
 docker-compose -f docker-compose-http.yml up
+
+```
+api_service\
+│
+├── src\
+│   │
+│   ├── api\
+│   │   │
+│   │   ├── v_1_0\
+│   │   │   │
+│   │   │   ├── resourses\
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── history.py
+│   │   │   │   ├── login.py
+│   │   │   │   ├── stats.py
+│   │   │   │   └── stock.py
+│   │   │   │
+│   │   │   ├── schemas\
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── stock.py
+│   │   │   │   └── user.py
+│   │   │   │
+│   │   │   ├── __init__.py
+│   │   │   └── blueprint.py
+│   │   │
+│   │   └── __init__.py
+│   │
+│   ├── auth\
+│   │   ├── __init__.py
+│   │   └── helpers.py
+│   │
+│   ├── models\
+│   │   ├── __init__.py
+│   │   ├── stock_query.py
+│   │   └── user.py
+│   │
+│   ├── services\
+│   │   ├── __init__.py
+│   │   └── stock_service.py
+│   │
+│   ├── .flaskenv
+│   ├── .testenv
+│   ├── __init__.py
+│   ├── app.py
+│   ├── commands.py
+│   ├── config.py
+│   ├── extensions.py
+│   └── wsgi.py
+│
+├── tests\
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── factories.py
+│
+├── Dockerfile
+├── requirements.txt
+└── uwsgi.ini
+```
+
+```
+stock_service\
+│
+├── src\
+│   │
+│   ├── api\
+│   │   │
+│   │   ├── v_1_0\
+│   │   │   │
+│   │   │   ├── resources\
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── stock.py
+│   │   │   │
+│   │   │   ├── schemas\
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── stock.py
+│   │   │   │
+│   │   │   ├── __init__.py
+│   │   │   └── blueprint.py
+│   │   │
+│   │   └── __init__.py
+│   │
+│   ├── services\
+│   │   ├── __init__.py
+│   │   └── stooq_service.py
+│   │
+│   ├── .flaskenv
+│   ├── .testenv
+│   ├── __init__.py
+│   ├── app.py
+│   ├── config.py
+│   ├── extensions.py
+│   ├── rpc_server.py
+│   └── wsgi.py
+│
+├── Dockerfile
+├── requirements.txt
+├── rpc_server.py
+└── uwsgi.ini
+```

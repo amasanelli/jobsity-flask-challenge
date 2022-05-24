@@ -1,11 +1,12 @@
 from datetime import datetime
+import os
 from flask import request
 from flask_restful import Resource
 from src.api.v_1_0.schemas import StockInfoSchema
 from src.auth import login_required
 from src.extensions import db
 from src.models import StockQueryModel
-from src.services import StockRPCService
+from src.services import StockRPCService, StockHTTPService
 
 
 class StockQuery(Resource):
@@ -22,7 +23,10 @@ class StockQuery(Resource):
             return 'Missing stock code', 400
 
         try:
-            stock_data = StockRPCService().get_data(stock_code)
+            if os.getenv('RPC') == 'enabled':
+                stock_data = StockRPCService().get_data(stock_code)
+            else:
+                stock_data = StockHTTPService.get_data(stock_code)
         except Exception as e:
             return e.args[0], 400
 

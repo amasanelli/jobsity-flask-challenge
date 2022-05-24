@@ -6,14 +6,15 @@ services:
         image: rabbitmq:management-alpine
         ports:
             - "15672:15672" 
-            - "5672:5672"
+        expose:
+            - "5672"
         healthcheck:
             test: [ "CMD", "nc", "-z", "localhost", "5672" ]
             interval: 3s
             timeout: 10s
             retries: 3
 
-    api_service:
+    api-service:
         build: ./api_service
         restart: on-failure
         depends_on:
@@ -21,10 +22,8 @@ services:
         ports:
             - "5000:5000"
 
-    stock_service:
+    stock-service:
         build: ./stock_service
         restart: on-failure
         depends_on:
             - rabbitmq-server
-        ports:
-            - "5001:5000"

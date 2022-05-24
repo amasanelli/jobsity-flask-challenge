@@ -1,6 +1,5 @@
 from flask import Flask
 from .api import blueprint
-from src import rpc_server
 from .extensions import ma
 
 def create_app(testing=False):

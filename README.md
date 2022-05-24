@@ -84,4 +84,17 @@ __Important:__ If your implementation requires different steps to start the serv
 (like starting a rabbitMQ consumer), document them here!
 
 
-docker run --rm -it -p 15672:15672 -p 5672:5672 rabbitmq:management-alpine
+docker run --rm -d -p 15672:15672 -p 5672:5672 --name rabbit rabbitmq:management-alpine
+
+docker build -t stock-service .
+docker run --rm -d -p 5001:5000 --name stock stock-service
+docker run --rm -d -p 5001:5000 --name stock stock-service uwsgi uwsgi.ini
+
+docker build -t api-service .
+docker run --rm -d -p 5000:5000 --name api api-service
+docker run --rm -d -p 5000:5000 -e RPC=disabled --name api api-service
+
+docker-compose build
+docker-compose up
+
+docker-compose -f docker-compose-http.yml up

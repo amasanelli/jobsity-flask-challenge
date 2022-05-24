@@ -15,6 +15,8 @@ RUN apt-get update \
 	&& apt-get purge -y --auto-remove gcc
 
 COPY uwsgi.ini .
+COPY rpc_server.py .
 COPY src src/
 
-CMD [ "uwsgi", "uwsgi.ini" ]
+CMD [ "python", "rpc_server.py" ]
+#CMD [ "uwsgi", "uwsgi.ini" ]

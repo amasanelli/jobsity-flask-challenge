@@ -4,6 +4,7 @@ ENV FLASK_ENV=development
 ENV FLASK_APP=app:create_app
 ENV SECRET_KEY=changeme
 ENV DATABASE_URI=sqlite:///src/api_service.sqlite3
+ENV RPC=enabled
 
 RUN mkdir /api_service
 WORKDIR /api_service

@@ -53,7 +53,7 @@ class StockRPCService(object):
 
 class StockHTTPService(object):
 
-    url = 'http://127.0.0.1:5001/api/v1/stock?stockCode={}'
+    url = 'http://stock-service:5000/api/v1/stock?stockCode={}'
 
     @classmethod
     def get_data(cls, stock_code: str):

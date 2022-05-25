@@ -7,6 +7,7 @@ class StockInfoSchema(ma.Schema):
     """
     Stock schema to use in stock query
     """
+    
     symbol = ma.String(dump_only=True)
     company_name = ma.String(dump_only=True)
     quote = ma.Float(dump_only=True)

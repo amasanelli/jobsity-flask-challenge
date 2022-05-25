@@ -4,7 +4,7 @@ import json
 import pika
 import uuid
 import requests
-
+import os
 
 class StockRPCService(object):
     """
@@ -13,7 +13,7 @@ class StockRPCService(object):
 
     def __init__(self):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='rabbitmq-server')
+            pika.ConnectionParameters(host=os.getenv('RABBITMQ_HOST', 'rabbitmq-server'))
         )
 
         self.channel = self.connection.channel()

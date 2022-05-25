@@ -26,7 +26,7 @@ class Login(Resource):
         if username is None or password is None:
             return "Missing login credentials", 400
 
-        user: UserModel = UserModel.query.filter_by(username=username).first()
+        user: UserModel = UserModel.query.filter_by(username=username, active=True).first()
         if user is None:
             return "User not found", 400
 

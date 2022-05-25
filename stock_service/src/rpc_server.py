@@ -2,6 +2,8 @@
 
 import json
 import pika
+import os
+
 from .api.v_1_0.schemas import StockSchema
 from .services import Stooq
 
@@ -10,7 +12,7 @@ class RPCService():
 
     def __init__(self):
         connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='rabbitmq-server')
+            pika.ConnectionParameters(host=os.getenv('RABBITMQ_HOST', 'rabbitmq-server'))
         )
 
         channel = connection.channel()

@@ -15,8 +15,8 @@ def cli():
 @with_appcontext
 def init():
     """Create test users"""
-    from .extensions import db
-    from .models import UserModel
+    from src.extensions import db
+    from src.models import UserModel
 
     click.echo("create admin user")
     user = UserModel(username="admin", email="admin@mail.com", password="admin", active=True, role='ADMIN')

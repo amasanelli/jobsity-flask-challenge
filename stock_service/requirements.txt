@@ -19,3 +19,4 @@ flask_bcrypt
 PyJWT
 pika
 uwsgi
+pytest-dependency

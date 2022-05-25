@@ -86,7 +86,7 @@ __Important:__ If your implementation requires different steps to start the serv
 ---
 
 ## How to run the project
-* Because the idea is to test my knowledge with microservices, I decided to dockerize the services
+* Because the idea is to test my knowledge with microservices, I've decided to dockerize the services
 * To run them use:
   ```
   docker-compose build
@@ -117,18 +117,18 @@ __Important:__ If your implementation requires different steps to start the serv
   role='USER'
   ```
 
-> PD: Replace `docker-compose build` with `docker-compose -f docker-compose-http.yml up` to run a project in which it's services communicate by http requests
+> PD: Replace `docker-compose build` with `docker-compose -f docker-compose-http.yml up` to run a project in which the services communicate by http requests
 
 ## How to use the project
 
-* To login send a `POST` request to `http://127.0.0.1:5000/api/v1/login` whith the following `JSON body`:
+* To login send a `POST` request to `http://127.0.0.1:5000/api/v1/login` whith the user data as a `JSON body`. For example:
   ```json
   {
       "username": "admin",
       "password": "admin"
   }
   ```
-* Use the `token` retrieved in the previous step as a `Bearer token` to authenticate your requests. You have to put it in the `Authorization header`
+* Use the `token` retrieved in the previous step as a `Bearer token` authenticate and authorize your requests. You have to put it in the `Authorization header`
 * Now you can send `GET` requests to the following endpoints:
   ```bash
   http://127.0.0.1:5000/api/v1/stock?q=aapl.us # change the stock code
@@ -141,7 +141,7 @@ __Important:__ If your implementation requires different steps to start the serv
 ## How to test the project
 
 * To test the api service
-  - In one terminal run:
+  - Start up the stock service and rabbitmq container run:
   ```
   docker run --rm -d -p 5672:5672 --name rabbit rabbitmq:management-alpine
   cd stock_service; python rpc_server.py

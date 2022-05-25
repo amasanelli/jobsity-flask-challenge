@@ -74,126 +74,83 @@ The following features are optional to implement, but if you do, you'll be ranke
 * Connect the two services via RabbitMQ instead of doing http calls.
 * Use JWT instead of basic authentication for endpoints.
 
-## How to run the project
-* Create a virtualenv: `python -m venv virtualenv` and activate it `. virtualenv/bin/activate`.
-* Install dependencies: `pip install -r requirements.txt`
-* Start the api service: `cd api_service ; flask db init ; flask db migrate; flask db upgrade ; flask run`
-* Start the stock service: `cd stock_service ; flask run`
+## ~~How to run the project~~
+* ~~Create a virtualenv: `python -m venv virtualenv` and activate it `. virtualenv/bin/activate`.~~
+* ~~Install dependencies: `pip install -r requirements.txt`~~
+* ~~Start the api service: `cd api_service ; flask db init ; flask db migrate; flask db upgrade ; flask run`~~
+* ~~Start the stock service: `cd stock_service ; flask run`~~
 
 __Important:__ If your implementation requires different steps to start the services
 (like starting a rabbitMQ consumer), document them here!
 
+---
 
-docker run --rm -d -p 15672:15672 -p 5672:5672 --name rabbit rabbitmq:management-alpine
+## How to run the project
+* Because the idea is to test my knowledge with microservices, I decided to dockerize the services
+* To run them use:
+  ```
+  docker-compose build
 
-docker build -t stock-service .
-docker run --rm -d -p 5001:5000 --name stock stock-service
-docker run --rm -d -p 5001:5000 --name stock stock-service uwsgi uwsgi.ini
+  docker-compose up -d
 
-docker build -t api-service .
-docker run --rm -d -p 5000:5000 --name api api-service
-docker run --rm -d -p 5000:5000 -e RPC=disabled --name api api-service
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db stamp head'
 
-docker-compose build
-docker-compose up
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db migrate' 
 
-docker-compose -f docker-compose-http.yml up
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db upgrade' 
 
-```
-api_service\
-│
-├── src\
-│   │
-│   ├── api\
-│   │   │
-│   │   ├── v_1_0\
-│   │   │   │
-│   │   │   ├── resourses\
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── history.py
-│   │   │   │   ├── login.py
-│   │   │   │   ├── stats.py
-│   │   │   │   └── stock.py
-│   │   │   │
-│   │   │   ├── schemas\
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── stock.py
-│   │   │   │   └── user.py
-│   │   │   │
-│   │   │   ├── __init__.py
-│   │   │   └── blueprint.py
-│   │   │
-│   │   └── __init__.py
-│   │
-│   ├── auth\
-│   │   ├── __init__.py
-│   │   └── helpers.py
-│   │
-│   ├── models\
-│   │   ├── __init__.py
-│   │   ├── stock_query.py
-│   │   └── user.py
-│   │
-│   ├── services\
-│   │   ├── __init__.py
-│   │   └── stock_service.py
-│   │
-│   ├── .flaskenv
-│   ├── .testenv
-│   ├── __init__.py
-│   ├── app.py
-│   ├── commands.py
-│   ├── config.py
-│   ├── extensions.py
-│   └── wsgi.py
-│
-├── tests\
-│   ├── __init__.py
-│   ├── conftest.py
-│   └── factories.py
-│
-├── Dockerfile
-├── requirements.txt
-└── uwsgi.ini
-```
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 python commands.py init' 
+  ```
+* The previous commands have started up the db and created two users with the following data:
+  ```python
+  username="admin"
+  email="admin@mail.com"
+  password="admin"
+  active=True
+  role='ADMIN'
+  ```
+  ```python
+  username="johndoe"
+  email="johndoe@mail.com"
+  password="john"
+  active=True
+  role='USER'
+  ```
 
-```
-stock_service\
-│
-├── src\
-│   │
-│   ├── api\
-│   │   │
-│   │   ├── v_1_0\
-│   │   │   │
-│   │   │   ├── resources\
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── stock.py
-│   │   │   │
-│   │   │   ├── schemas\
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── stock.py
-│   │   │   │
-│   │   │   ├── __init__.py
-│   │   │   └── blueprint.py
-│   │   │
-│   │   └── __init__.py
-│   │
-│   ├── services\
-│   │   ├── __init__.py
-│   │   └── stooq_service.py
-│   │
-│   ├── .flaskenv
-│   ├── .testenv
-│   ├── __init__.py
-│   ├── app.py
-│   ├── config.py
-│   ├── extensions.py
-│   ├── rpc_server.py
-│   └── wsgi.py
-│
-├── Dockerfile
-├── requirements.txt
-├── rpc_server.py
-└── uwsgi.ini
-```
+> PD: Replace `docker-compose build` with `docker-compose -f docker-compose-http.yml up` to run a project in which it's services communicate by http requests
+
+## How to use the project
+
+* To login send a `POST` request to `http://127.0.0.1:5000/api/v1/login` whith the following `JSON body`:
+  ```json
+  {
+      "username": "admin",
+      "password": "admin"
+  }
+  ```
+* Use the `token` retrieved in the previous step as a `Bearer token` to authenticate your requests. You have to put it in the `Authorization header`
+* Now you can send `GET` requests to the following endpoints:
+  ```bash
+  http://127.0.0.1:5000/api/v1/stock?q=aapl.us # change the stock code
+
+  http://127.0.0.1:5000/api/v1/users/history
+
+  http://127.0.0.1:5000/api/v1/stats
+  ```
+
+## How to test the project
+
+* To test the api service
+  - In one terminal run:
+  ```
+  docker run --rm -d -p 5672:5672 --name rabbit rabbitmq:management-alpine
+  cd stock_service; python rpc_server.py
+  ```
+  - Open a new terminal and run:
+  ```
+  cd api_service/tests; pytest
+  ```
+* To test the stock service run:
+  ```
+  cd stock_service/tests; pytest
+  ```

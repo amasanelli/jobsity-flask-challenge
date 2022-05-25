@@ -1,0 +1,29 @@
+# docker-compose to run services allowing them to communicate using rabbitmq
+
+version: "3.2"
+services:
+    rabbitmq-server:
+        image: rabbitmq:management-alpine
+        ports:
+            - "15672:15672" 
+        expose:
+            - "5672"
+        healthcheck:
+            test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+            interval: 3s
+            timeout: 10s
+            retries: 3
+
+    api-service:
+        build: ./api_service
+        restart: on-failure
+        depends_on:
+            - rabbitmq-server
+        ports:
+            - "5000:5000"
+
+    stock-service:
+        build: ./stock_service
+        restart: on-failure
+        depends_on:
+            - rabbitmq-server

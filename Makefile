@@ -1,8 +1,11 @@
-.PHONY: init init-migration build run db-migrate test tox
+.PHONY: init build run db-migrate db-upgrade db-users
 
-init:  build run
-	docker-compose exec web flask db upgrade
-	docker-compose exec web flask api init
+init:  
+	build 
+	run
+	db-migrate
+	db-upgrade
+	db-users
 	@echo "Init done, containers running"
 
 build:
@@ -11,17 +14,15 @@ build:
 run:
 	docker-compose up -d
 
+db-stamp-head:
+	docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db stamp head'
+
 db-migrate:
-	docker-compose exec web flask db migrate
+	docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db migrate' 
 
 db-upgrade:
-	docker-compose exec web flask db upgrade
+	docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db upgrade' 
 
-test:
-	docker-compose run -v $(PWD)/tests:/code/tests:ro web tox -e test
+db-users:
+	docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 python commands.py init' 
 
-tox:
-	docker-compose run -v $(PWD)/tests:/code/tests:ro web tox -e py38
-
-lint:
-	docker-compose run web tox -e lint

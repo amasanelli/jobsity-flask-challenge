@@ -1,0 +1,18 @@
+# docker-compose to run services allowing them to communicate by http requests
+
+version: "3.2"
+services:
+    api-service:
+        build: ./api_service
+        restart: on-failure
+        ports:
+            - "5000:5000"
+        environment:
+            - RPC=disabled
+
+    stock-service:
+        build: ./stock_service
+        restart: on-failure
+        expose:
+            - "5000"
+        command: uwsgi uwsgi.ini

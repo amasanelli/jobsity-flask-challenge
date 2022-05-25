@@ -74,11 +74,83 @@ The following features are optional to implement, but if you do, you'll be ranke
 * Connect the two services via RabbitMQ instead of doing http calls.
 * Use JWT instead of basic authentication for endpoints.
 
-## How to run the project
-* Create a virtualenv: `python -m venv virtualenv` and activate it `. virtualenv/bin/activate`.
-* Install dependencies: `pip install -r requirements.txt`
-* Start the api service: `cd api_service ; flask db migrate; flask db upgrade ; flask run`
-* Start the stock service: `cd stock_service ; flask run`
+## ~~How to run the project~~
+* ~~Create a virtualenv: `python -m venv virtualenv` and activate it `. virtualenv/bin/activate`.~~
+* ~~Install dependencies: `pip install -r requirements.txt`~~
+* ~~Start the api service: `cd api_service ; flask db init ; flask db migrate; flask db upgrade ; flask run`~~
+* ~~Start the stock service: `cd stock_service ; flask run`~~
 
 __Important:__ If your implementation requires different steps to start the services
 (like starting a rabbitMQ consumer), document them here!
+
+---
+
+## How to run the project
+* Because the idea is to test my knowledge with microservices, I've decided to dockerize the services
+* To run them use:
+  ```
+  docker-compose build
+
+  docker-compose up -d
+
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db stamp head'
+
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db migrate' 
+
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 flask db upgrade' 
+
+  docker-compose exec api-service /bin/sh -c 'cd src; DATABASE_URI=sqlite:///api_service.sqlite3 python commands.py init' 
+  ```
+* The previous commands have started up the db and created two users with the following data:
+  ```python
+  username="admin"
+  email="admin@mail.com"
+  password="admin"
+  active=True
+  role='ADMIN'
+  ```
+  ```python
+  username="johndoe"
+  email="johndoe@mail.com"
+  password="john"
+  active=True
+  role='USER'
+  ```
+
+> PD: Replace `docker-compose build` with `docker-compose -f docker-compose-http.yml up` to run a project in which the services communicate by http requests
+
+## How to use the project
+
+* To login send a `POST` request to `http://127.0.0.1:5000/api/v1/login` whith the user data as a `JSON body`. For example:
+  ```json
+  {
+      "username": "admin",
+      "password": "admin"
+  }
+  ```
+* Use the `token` retrieved in the previous step as a `Bearer token` authenticate and authorize your requests. You have to put it in the `Authorization header`
+* Now you can send `GET` requests to the following endpoints:
+  ```bash
+  http://127.0.0.1:5000/api/v1/stock?q=aapl.us # change the stock code
+
+  http://127.0.0.1:5000/api/v1/users/history
+
+  http://127.0.0.1:5000/api/v1/stats
+  ```
+
+## How to test the project
+
+* To test the api service
+  - Start up the stock service and rabbitmq container run:
+  ```
+  docker run --rm -d -p 5672:5672 --name rabbit rabbitmq:management-alpine
+  cd stock_service; python rpc_server.py
+  ```
+  - Open a new terminal and run:
+  ```
+  cd api_service/tests; pytest
+  ```
+* To test the stock service run:
+  ```
+  cd stock_service/tests; pytest
+  ```
